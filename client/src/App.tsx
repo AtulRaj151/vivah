@@ -12,6 +12,7 @@ import Booking from "@/pages/booking";
 import Checkout from "@/pages/checkout";
 import Confirmation from "@/pages/confirmation";
 import Dashboard from "@/pages/dashboard";
+import AdminDashboard from "@/pages/admin-dashboard";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import { useState, useEffect, createContext } from "react";
@@ -29,6 +30,8 @@ export interface User {
   username: string;
   email: string;
   fullName: string;
+  type: string;
+  createdAt?: Date;
 }
 
 export interface UserContextType {
@@ -44,6 +47,8 @@ export const UserContext = createContext<UserContextType>({
 });
 
 function Router() {
+  // No need to access user context here for simple routing
+
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -54,6 +59,7 @@ function Router() {
       <Route path="/checkout/:bookingId" component={Checkout} />
       <Route path="/confirmation/:bookingId" component={Confirmation} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

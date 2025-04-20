@@ -155,6 +155,17 @@ app.get("/api/photographers/:id", async (req, res) => {
   });
 
   // User routes
+  app.get("/api/users", async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      // Return users without exposing passwords
+      const safeUsers = users.map(({password, ...user}) => user);
+      res.json(safeUsers);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
   app.post("/api/users/register", async (req, res) => {
     try {
       const validatedData = insertUserSchema.parse(req.body);
@@ -242,6 +253,15 @@ app.get("/api/photographers/:id", async (req, res) => {
   });
 
   // Booking routes
+  app.get("/api/bookings", async (req, res) => {
+    try {
+      const bookings = await storage.getAllBookings();
+      res.json(bookings);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
   app.post("/api/bookings", async (req, res) => {
     try {
       const validatedData = insertBookingSchema.parse(req.body);
