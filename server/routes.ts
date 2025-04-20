@@ -1,5 +1,6 @@
 import express, { type Express } from "express";
 import { createServer, type Server } from "http";
+import { authHandler } from "./auth";
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertBookingSchema, insertUserSchema } from "@shared/schema";
@@ -16,6 +17,8 @@ const stripe = process.env.STRIPE_SECRET_KEY
   : null;
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth routes
+  app.use("/api/auth/*", authHandler);
   // API routes with /api prefix
 
   // Photographers routes

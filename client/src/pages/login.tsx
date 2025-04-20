@@ -1,17 +1,17 @@
 
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserContext } from "@/App";
+import { Separator } from "@/components/ui/separator";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [_, setLocation] = useLocation();
-  const { setUser } = useContext(UserContext);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,24 +21,19 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-
-      const data = await response.json();
       
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error("Invalid credentials");
       }
 
-      setUser(data);
-      
-      // Redirect based on user type
-      if (data.type === "admin") {
-        setLocation("/admin");
-      } else {
-        setLocation("/dashboard");
-      }
+      setLocation("/dashboard");
     } catch (err: any) {
       setError(err.message);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = "/api/auth/signin/google";
   };
 
   return (
@@ -47,27 +42,39 @@ export default function Login() {
         <CardHeader>
           <CardTitle>Login</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <Button 
+            variant="outline" 
+            className="w-full" 
+            onClick={handleGoogleLogin}
+          >
+            <FcGoogle className="mr-2 h-5 w-5" />
+            Continue with Google
+          </Button>
+          
+          <div className="relative">
+            <Separator />
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-xs text-muted-foreground">
+              OR
+            </span>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div>
-              <Input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
+            <Input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             {error && <p className="text-sm text-red-500">{error}</p>}
             <Button type="submit" className="w-full">
-              Login
+              Login with Username
             </Button>
           </form>
         </CardContent>
