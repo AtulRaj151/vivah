@@ -60,6 +60,17 @@ export interface IStorage {
   updateBookingPaymentStatus(id: number, status: string, paymentIntentId?: string): Promise<Booking>;
   updateBookingStatus(id: number, status: string): Promise<Booking>;
   getPhotographerAvailability(photographerId: number, date: Date): Promise<boolean>;
+  
+  // Earnings methods
+  getAllEarnings(): Promise<Earnings[]>;
+  getEarningsByPhotographer(photographerId: number): Promise<Earnings[]>;
+  getEarningsSummary(photographerId?: number): Promise<{
+    totalEarnings: number;
+    platformEarnings: number;
+    photographerEarnings: number;
+    pendingPayouts: number;
+  }>;
+  createEarnings(earnings: InsertEarnings): Promise<Earnings>;
 }
 
 export class MemStorage implements IStorage {
@@ -71,6 +82,7 @@ export class MemStorage implements IStorage {
   private portfolioItems: Map<number, PortfolioItem>;
   private testimonials: Map<number, Testimonial>;
   private bookings: Map<number, Booking>;
+  private earnings: Map<number, Earnings>;
   private currentId: { [key: string]: number };
 
   constructor() {
@@ -82,6 +94,7 @@ export class MemStorage implements IStorage {
     this.portfolioItems = new Map();
     this.testimonials = new Map();
     this.bookings = new Map();
+    this.earnings = new Map();
     this.currentId = {
       users: 1,
       photographers: 1,
@@ -90,7 +103,8 @@ export class MemStorage implements IStorage {
       packages: 1,
       portfolioItems: 1,
       testimonials: 1,
-      bookings: 1
+      bookings: 1,
+      earnings: 1
     };
 
     // Initialize with sample data
@@ -117,7 +131,12 @@ export class MemStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentId.users++;
     const now = new Date();
-    const user: User = { ...insertUser, id, createdAt: now };
+    const user: User = { 
+      ...insertUser, 
+      id, 
+      createdAt: now,
+      type: insertUser.type || 'customer' 
+    };
     this.users.set(id, user);
     return user;
   }

@@ -415,8 +415,41 @@ app.get("/api/photographers/:id", async (req, res) => {
       const photographerId = req.query.photographerId ? parseInt(req.query.photographerId as string) : undefined;
       const timeframe = req.query.timeframe || 'month';
       
-      const analytics = await storage.getEarningsAnalytics(photographerId, timeframe as string);
-      res.json(analytics);
+      // Since we don't have a real implementation of getEarningsAnalytics,
+      // let's return some dummy data for now
+      const earnings = photographerId 
+        ? await storage.getEarningsByPhotographer(photographerId)
+        : await storage.getAllEarnings();
+      
+      // Group earnings by month
+      const today = new Date();
+      const last6Months = new Array(6).fill(0).map((_, i) => {
+        const date = new Date(today);
+        date.setMonth(date.getMonth() - i);
+        return {
+          month: date.toLocaleString('default', { month: 'short' }),
+          year: date.getFullYear()
+        };
+      });
+      
+      // Create analytics result
+      const analytics = last6Months.map(month => {
+        const monthlyEarnings = earnings.filter((e: any) => {
+          const earnedDate = new Date(e.earnedAt);
+          return earnedDate.getMonth() === new Date(month.month + ' 1, ' + month.year).getMonth() &&
+                 earnedDate.getFullYear() === month.year;
+        });
+        
+        const totalAmount = monthlyEarnings.reduce((sum: number, e: any) => sum + e.amount, 0);
+        
+        return {
+          period: `${month.month} ${month.year}`,
+          amount: totalAmount,
+          bookings: monthlyEarnings.length
+        };
+      });
+      
+      res.json(analytics.reverse()); // Most recent month first
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

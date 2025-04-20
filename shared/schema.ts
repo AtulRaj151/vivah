@@ -16,7 +16,8 @@ export const users = pgTable("users", {
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
-  type: true, //omit type in insert schema
+}).extend({
+  type: z.enum(['customer', 'admin']).optional()
 });
 
 export const photographers = pgTable("photographers", {
