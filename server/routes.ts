@@ -170,12 +170,20 @@ app.get("/api/photographers/:id", async (req, res) => {
         return res.status(400).json({ message: "Email already in use" });
       }
 
-      const user = await storage.createUser(validatedData);
+      // Add type from request body or default to 'customer'
+      const userType = req.body.type || 'customer';
+      
+      const user = await storage.createUser({
+        ...validatedData,
+        type: userType
+      });
+      
       res.status(201).json({ 
         id: user.id, 
         username: user.username, 
         email: user.email,
-        fullName: user.fullName
+        fullName: user.fullName,
+        type: user.type
       });
     } catch (error: any) {
       if (error instanceof z.ZodError) {
