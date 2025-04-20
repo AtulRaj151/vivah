@@ -26,7 +26,6 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { UserContext } from "@/App";
-import { GlobalSearch } from "@/components/ui/global-search";
 
 export default function Header() {
   const [location] = useLocation();
@@ -53,7 +52,6 @@ export default function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:ml-6 md:flex md:space-x-6">
-              <GlobalSearch />
               <Link href="/">
                 <a className={`px-3 py-2 text-sm font-medium ${isActive('/') ? 'text-primary' : 'text-neutral-600 hover:text-primary'}`}>
                   Home
