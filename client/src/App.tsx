@@ -104,6 +104,10 @@ function App() {
         console.error("Failed to parse stored user", error);
         localStorage.removeItem("user");
       }
+    } else {
+      // Force the role dialog to open if no user is found
+      setRoleDialogOpen(true);
+      setLoginDialogOpen(false);
     }
   }, []);
 

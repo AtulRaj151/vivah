@@ -5,10 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
 import { PhotographyCard } from "@/components/ui/photography-card";
-import { Camera, Video, Focus, Film, CheckCircle, Calendar, Users, Star } from "lucide-react";
+import { Camera, Video, Focus, Film, CheckCircle, Calendar, Users, Star, AreaChart } from "lucide-react";
 import { Testimonial, ServiceCategory, Package, PortfolioItem } from "@shared/schema";
+import { useContext } from "react";
+import { UserContext } from "@/App";
 
 export default function Home() {
+  const { user } = useContext(UserContext);
+  
   const { data: serviceCategories } = useQuery<ServiceCategory[]>({
     queryKey: ["/api/service-categories"],
   });
@@ -304,9 +308,20 @@ export default function Home() {
               <p className="text-white/80">Tailor services to your needs</p>
             </div>
           </div>
-          <Button asChild size="lg" variant="secondary" className="font-medium">
-            <Link href="/booking">Book Your Date Now</Link>
-          </Button>
+          <div className="flex gap-4 justify-center">
+            <Button asChild size="lg" variant="secondary" className="font-medium">
+              <Link href="/booking">Book Your Date Now</Link>
+            </Button>
+            
+            {user?.type === 'admin' && (
+              <Button asChild size="lg" variant="outline" className="font-medium border-white text-white hover:bg-white/20">
+                <Link href="/admin">
+                  <AreaChart className="mr-2 h-5 w-5" />
+                  Admin Dashboard
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
       </section>
     </div>

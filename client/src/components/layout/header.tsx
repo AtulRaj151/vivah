@@ -10,7 +10,8 @@ import {
   Focus,
   Film,
   Calendar,
-  LogIn
+  LogIn,
+  Users
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -229,14 +230,25 @@ export default function Header() {
                   <div className="mt-auto py-4">
                     {isAuthenticated ? (
                       <div className="space-y-4">
-                        <SheetClose asChild>
-                          <Link href="/dashboard">
-                            <Button variant="outline" className="w-full justify-start">
-                              <Calendar className="mr-2 h-4 w-4" />
-                              My Bookings
-                            </Button>
-                          </Link>
-                        </SheetClose>
+                        {user?.type === 'admin' ? (
+                          <SheetClose asChild>
+                            <Link href="/admin">
+                              <Button variant="outline" className="w-full justify-start">
+                                <Users className="mr-2 h-4 w-4" />
+                                Admin Dashboard
+                              </Button>
+                            </Link>
+                          </SheetClose>
+                        ) : (
+                          <SheetClose asChild>
+                            <Link href="/dashboard">
+                              <Button variant="outline" className="w-full justify-start">
+                                <Calendar className="mr-2 h-4 w-4" />
+                                My Bookings
+                              </Button>
+                            </Link>
+                          </SheetClose>
+                        )}
                         <Button 
                           variant="ghost" 
                           className="w-full justify-start"
