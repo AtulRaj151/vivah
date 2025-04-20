@@ -1,13 +1,13 @@
 
 import { Auth } from "@auth/core";
 import Google from "@auth/core/providers/google";
-import { expressHandler } from "@auth/express";
+import { ExpressAuth } from "@auth/express";
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.warn("Missing Google OAuth credentials");
 }
 
-export const authHandler = expressHandler(Auth({
+export const authHandler = ExpressAuth({
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -23,5 +23,5 @@ export const authHandler = expressHandler(Auth({
       }
       return session;
     },
-  },
-}));
+  }
+});

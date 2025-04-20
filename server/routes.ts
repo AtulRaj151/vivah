@@ -33,13 +33,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin routes
 app.get("/api/admin/stats", async (req, res) => {
-  const stats = {
-    totalBookings: (await db.getAllBookings()).length,
-    totalRevenue: (await db.getAllBookings()).reduce((acc, booking) => acc + booking.totalAmount, 0),
-    totalPhotographers: (await db.getAllPhotographers()).length,
-    totalCustomers: (await db.getAllUsers()).filter(u => u.type === 'customer').length
-  };
-  res.json(stats);
+  try {
+    const bookings = await storage.getAllBookings();
+    const photographers = await storage.getAllPhotographers();
+    const users = await storage.getAllUsers();
+    
+    const stats = {
+      totalBookings: bookings.length,
+      totalRevenue: bookings.reduce((acc, booking) => acc + booking.totalAmount, 0),
+      totalPhotographers: photographers.length,
+      totalCustomers: users.filter(u => u.type === 'customer').length
+    };
+    res.json(stats);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 app.get("/api/photographers/:id", async (req, res) => {
