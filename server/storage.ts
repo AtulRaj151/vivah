@@ -20,6 +20,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  getAllUsers(): Promise<User[]>;
 
   // Photographer methods
   getAllPhotographers(): Promise<Photographer[]>;
@@ -52,6 +53,7 @@ export interface IStorage {
   createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial>;
 
   // Booking methods
+  getAllBookings(): Promise<Booking[]>;
   getBookingsByUser(userId: number): Promise<Booking[]>;
   getBooking(id: number): Promise<Booking | undefined>;
   createBooking(booking: InsertBooking): Promise<Booking>;
@@ -118,6 +120,10 @@ export class MemStorage implements IStorage {
     const user: User = { ...insertUser, id, createdAt: now };
     this.users.set(id, user);
     return user;
+  }
+  
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values());
   }
 
   // Photographer methods
@@ -223,6 +229,10 @@ export class MemStorage implements IStorage {
   }
 
   // Booking methods
+  async getAllBookings(): Promise<Booking[]> {
+    return Array.from(this.bookings.values());
+  }
+  
   async getBookingsByUser(userId: number): Promise<Booking[]> {
     return Array.from(this.bookings.values()).filter(
       (booking) => booking.userId === userId

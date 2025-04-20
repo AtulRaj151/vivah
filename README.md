@@ -1,113 +1,82 @@
+# Indian Wedding Photography & Videography Booking Platform
 
-# Royal Videography - Dehri on Sone
+A full-stack web application for booking Indian wedding photography and videography services, with integrated Stripe payment processing.
 
-A full-stack web application for booking photography and videography services, based in Dehri on Sone, Bihar.
+## Features
+
+- Browse photographers and videographers specializing in Indian weddings
+- View service categories: Photography, Videography, Drone Services, Wedding Reels
+- Select and customize services or choose packages
+- Book professionals for specific dates and events
+- Real-time availability checking
+- Secure payment processing through Stripe
+- User account management
+- Testimonials from previous clients
+- Photographer portfolios
 
 ## Tech Stack
 
-### Frontend
-- **React 18** - UI library
-- **TypeScript** - Type safety and better developer experience
-- **Vite** - Next generation frontend tooling
-- **TanStack Query** - Server state management
-- **Radix UI** - Headless UI components
-- **Tailwind CSS** - Utility-first CSS framework
-- **Wouter** - Lightweight routing
-
-### Backend
-- **Express** - Node.js web framework
-- **TypeScript** - Type safety for backend
-- **Drizzle ORM** - TypeScript ORM
-- **PostgreSQL** - Database
-- **Stripe** - Payment processing
-
-## Features & API Endpoints
-
-### Authentication
-- Google OAuth Integration
-- `/api/auth/*` - Authentication endpoints
-- `/api/users/login` - User login (POST)
-- `/api/users/register` - User registration (POST)
-
-### Photographers
-- `/api/photographers` - List all photographers (GET)
-- `/api/photographers/:id` - Get photographer details with portfolio (GET)
-- Portfolio management
-- Availability tracking
-
-### Services
-- `/api/service-categories` - List all service categories (GET)
-- `/api/services` - List all services or filter by category (GET)
-- `/api/services/:id` - Get service details (GET)
-- Categories: Photography, Videography, Drone Services, Wedding Reels
-
-### Packages
-- `/api/packages` - List all packages (GET)
-- `/api/packages/:id` - Get package details (GET)
-- Custom package creation
-- Feature comparison
-
-### Bookings
-- `/api/bookings` - Create new booking (POST)
-- `/api/bookings/user/:userId` - Get user bookings (GET)
-- `/api/bookings/:id` - Get booking details (GET)
-- Availability check
-- Schedule management
-
-### Payments
-- `/api/create-payment-intent` - Initialize payment (POST)
-- `/api/webhook` - Stripe webhook handler (POST)
-- Secure payment processing
-- Payment status tracking
-
-### Reviews & Testimonials
-- `/api/testimonials` - List all testimonials (GET)
-- Rating system
-- Customer feedback
-
-### Analytics & Earnings
-- `/api/earnings` - Get earnings data (GET)
-- `/api/earnings/analytics` - Get earnings analytics (GET)
-- Performance metrics
-- Revenue tracking
-- Growth analysis
-
-### Location Services
-- Bihar-focused service coverage
-- District-wise availability
-- Location-based pricing
-- Integrated Google Maps
-
-## Development Tools
-- **ESBuild** - Fast JavaScript/TypeScript bundler
-- **tsx** - TypeScript execution environment
-- **Drizzle Kit** - Database schema management
-
-## Contact
-
-- **Founder**: Ajay Sharma
-- **Location**: Dehri-on-Sone, Bihar - 821305
-- **Phone**: +91 8340608143, +91 7004711393
-- **Email**: atulsid156@gmail.com
+- **Frontend**: React with TypeScript, TailwindCSS, Shadcn UI
+- **Backend**: Node.js, Express
+- **Database**: In-memory storage (can be adapted for PostgreSQL)
+- **Authentication**: Google OAuth
+- **Payment Processing**: Stripe API
+- **Routing**: Wouter
+- **State Management**: TanStack Query
 
 ## Getting Started
 
-1. Install dependencies:
+### Prerequisites
+
+- Node.js 18+ installed
+- Stripe account for payment processing
+- Google API credentials for authentication
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/indian-wedding-photography.git
+cd indian-wedding-photography
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Start development server:
+3. Set up environment variables in a `.env` file:
+```
+STRIPE_SECRET_KEY=your_stripe_secret_key
+VITE_STRIPE_PUBLIC_KEY=your_stripe_public_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+AUTH_SECRET=your_auth_secret
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-The application will be available at port 5000.
+## Project Structure
 
-## Environment Variables
+- `/client` - Frontend React application
+  - `/src/components` - UI components
+  - `/src/hooks` - Custom React hooks
+  - `/src/lib` - Utility functions and libraries
+  - `/src/pages` - Page components
+- `/server` - Backend Express application
+  - `/routes.ts` - API routes
+  - `/storage.ts` - Data storage interface
+  - `/auth.ts` - Authentication setup
+- `/shared` - Shared code between client and server
+  - `/schema.ts` - Database schema and types
 
-- `GOOGLE_CLIENT_ID` - Google OAuth client ID
-- `GOOGLE_CLIENT_SECRET` - Google OAuth client secret
-- `AUTH_SECRET` - Authentication secret key
-- `STRIPE_SECRET_KEY` - Stripe API secret key
-- `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+## Deployment
+
+The application can be deployed to any hosting service that supports Node.js applications.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
