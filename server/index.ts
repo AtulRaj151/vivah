@@ -1,9 +1,15 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
+improt cors from "cors";
 import { setupVite, serveStatic, log } from "./vite";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 
 const app = express();
+app.use(cors({
+  origin: "*", // Allow all origins (use specific domains in production)
+  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
