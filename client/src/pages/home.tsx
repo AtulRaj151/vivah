@@ -285,7 +285,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Ready to Book Your Wedding Photography?</h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-8 text-lg">
-            Let's create beautiful memories together. Our team is ready to capture your special day with creativity and passion.  Contact us at +91 7004711393 or visit us in Dehri on Sone, Bihar - 821305.
+            Let's create beautiful memories together. Founded by Ajay Sharma, Royal Video Graphy is ready to capture your special day with creativity and passion. Contact us at +91 8340608143, +91 7004711393 or email us at atulsid156@gmail.com. Visit us in Dehri-on-Sone, Bihar - 821305.
           </p>
           <div className="flex flex-wrap justify-center gap-6 mb-12">
             <div className="flex flex-col items-center">

@@ -77,15 +77,15 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center text-neutral-400">
                 <Phone className="h-4 w-4 mr-2" />
-                <span>+91 98765 43210</span>
+                <span>+91 8340608143, +91 7004711393</span>
               </li>
               <li className="flex items-center text-neutral-400">
                 <Mail className="h-4 w-4 mr-2" />
-                <span>contact@vivahphotography.com</span>
+                <span>atulsid156@gmail.com</span>
               </li>
               <li className="flex items-start text-neutral-400">
                 <MapPin className="h-4 w-4 mr-2 mt-1" />
-                <span>123 Wedding Street, Mumbai, Maharashtra 400001, India</span>
+                <span>Royal Video Graphy, Dehri-on-Sone, Bihar 821305</span>
               </li>
             </ul>
           </div>
