@@ -17,7 +17,7 @@ const stripe = process.env.STRIPE_SECRET_KEY
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // API routes with /api prefix
-  
+
   // Photographers routes
   app.get("/api/photographers", async (req, res) => {
     try {
@@ -62,14 +62,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/services", async (req, res) => {
     try {
       const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
-      
+
       let services;
       if (categoryId && !isNaN(categoryId)) {
         services = await storage.getServicesByCategory(categoryId);
       } else {
         services = await storage.getAllServices();
       }
-      
+
       res.json(services);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -136,7 +136,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/users/register", async (req, res) => {
     try {
       const validatedData = insertUserSchema.parse(req.body);
-      
+
       // Check if user already exists
       const existingUser = await storage.getUserByUsername(validatedData.username);
       if (existingUser) {
@@ -162,21 +162,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: error.message });
     }
   });
-  
+
   // Login route - simplified for demo
   app.post("/api/users/login", async (req, res) => {
     try {
       const { username, password } = req.body;
-      
+
       if (!username || !password) {
         return res.status(400).json({ message: "Username and password are required" });
       }
-      
+
       const user = await storage.getUserByUsername(username);
       if (!user || user.password !== password) {
         return res.status(401).json({ message: "Invalid credentials" });
       }
-      
+
       res.json({ 
         id: user.id, 
         username: user.username, 
@@ -193,16 +193,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const photographerId = parseInt(req.query.photographerId as string);
       const dateStr = req.query.date as string;
-      
+
       if (isNaN(photographerId) || !dateStr) {
         return res.status(400).json({ message: "Photographer ID and date are required" });
       }
-      
+
       const date = new Date(dateStr);
       if (isNaN(date.getTime())) {
         return res.status(400).json({ message: "Invalid date format" });
       }
-      
+
       const isAvailable = await storage.getPhotographerAvailability(photographerId, date);
       res.json({ available: isAvailable });
     } catch (error: any) {
@@ -264,7 +264,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const { amount, bookingId } = req.body;
-      
+
       if (!amount || isNaN(parseFloat(amount)) || !bookingId) {
         return res.status(400).json({ message: "Amount and booking ID are required" });
       }
@@ -326,7 +326,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object;
       const bookingId = parseInt(paymentIntent.metadata.bookingId);
-      
+
       if (!isNaN(bookingId)) {
         try {
           await storage.updateBookingPaymentStatus(bookingId, "paid", paymentIntent.id);
@@ -338,6 +338,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     res.json({ received: true });
+  });
+
+  // Earnings routes
+  app.get("/api/earnings", async (req, res) => {
+    try {
+      const photographerId = req.query.photographerId ? parseInt(req.query.photographerId as string) : undefined;
+      const earnings = photographerId 
+        ? await storage.getEarningsByPhotographer(photographerId)
+        : await storage.getAllEarnings();
+      const summary = await storage.getEarningsSummary(photographerId);
+      res.json({ earnings, summary });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
   });
 
   const httpServer = createServer(app);

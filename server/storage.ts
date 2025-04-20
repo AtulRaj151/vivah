@@ -285,7 +285,53 @@ export class MemStorage implements IStorage {
   }
 
   // Initialize with sample data
-  private initializeSampleData() {
+  // Earnings methods
+async getAllEarnings(): Promise<Earnings[]> {
+  return Array.from(this.earnings.values());
+}
+
+async getEarningsByPhotographer(photographerId: number): Promise<Earnings[]> {
+  return Array.from(this.earnings.values()).filter(
+    (earning) => earning.photographerId === photographerId
+  );
+}
+
+async getEarningsSummary(photographerId?: number): Promise<{
+  totalEarnings: number;
+  platformEarnings: number;
+  photographerEarnings: number;
+  pendingPayouts: number;
+}> {
+  const relevantEarnings = photographerId 
+    ? await this.getEarningsByPhotographer(photographerId)
+    : await this.getAllEarnings();
+
+  return relevantEarnings.reduce((acc, earning) => ({
+    totalEarnings: acc.totalEarnings + earning.amount,
+    platformEarnings: acc.platformEarnings + earning.platformEarnings,
+    photographerEarnings: acc.photographerEarnings + earning.photographerEarnings,
+    pendingPayouts: acc.pendingPayouts + (earning.status === 'pending' ? earning.photographerEarnings : 0)
+  }), {
+    totalEarnings: 0,
+    platformEarnings: 0,
+    photographerEarnings: 0,
+    pendingPayouts: 0
+  });
+}
+
+async createEarnings(insertEarnings: InsertEarnings): Promise<Earnings> {
+  const id = this.currentId.earnings++;
+  const earnings: Earnings = {
+    ...insertEarnings,
+    id,
+    earnedAt: new Date(),
+    paidAt: null
+  };
+  this.earnings.set(id, earnings);
+  return earnings;
+}
+
+private initializeSampleData() {
     // Add sample photographers
     const photographers: InsertPhotographer[] = [
       {

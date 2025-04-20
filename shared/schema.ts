@@ -142,5 +142,27 @@ export type InsertPortfolioItem = z.infer<typeof insertPortfolioItemSchema>;
 export type Testimonial = typeof testimonials.$inferSelect;
 export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
 
+// Earnings tracking
+export const earnings = pgTable("earnings", {
+  id: serial("id").primaryKey(),
+  photographerId: integer("photographer_id").notNull(),
+  bookingId: integer("booking_id").notNull(),
+  amount: real("amount").notNull(),
+  commissionRate: real("commission_rate").notNull().default(0.15), // 15% platform fee
+  platformEarnings: real("platform_earnings").notNull(),
+  photographerEarnings: real("photographer_earnings").notNull(),
+  earnedAt: timestamp("earned_at").defaultNow().notNull(),
+  status: text("status").notNull().default("pending"), // pending, paid, cancelled
+  paidAt: timestamp("paid_at"),
+});
+
+export const insertEarningsSchema = createInsertSchema(earnings).omit({
+  id: true,
+  earnedAt: true,
+  paidAt: true,
+});
+
 export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
+export type Earnings = typeof earnings.$inferSelect;
+export type InsertEarnings = z.infer<typeof insertEarningsSchema>;
