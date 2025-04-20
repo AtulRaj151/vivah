@@ -38,58 +38,77 @@ export default function Home() {
             opacity: "0.4"
           }}
         />
+        <div className="absolute inset-0 bg-black/30 z-0"></div> {/* Overlay for better text readability */}
+        <div className="absolute inset-0 wedding-pattern opacity-20 z-0"></div> {/* Subtle pattern */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
           <div className="max-w-3xl">
-            <Badge variant="secondary" className="mb-4">Premier Indian Wedding Photography</Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6">
+            <Badge variant="secondary" className="mb-4 animate-fade-in">Premier Indian Wedding Photography</Badge>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 animate-slide-up">
               Capture Your
-              <span className="text-primary"> Wedding Day</span> in
+              <span className="text-gradient"> Wedding Day</span> in
               <span className="text-secondary"> Timeless Beauty</span>
             </h1>
-            <p className="text-lg md:text-xl mb-8 text-neutral-200">
+            <p className="text-lg md:text-xl mb-8 text-neutral-200 animate-slide-up stagger-1">
               Expert photography and videography services for your special celebration.
               We create lasting memories with artistic vision and cultural understanding.
             </p>
-            <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg" className="font-medium">
+            <div className="flex flex-wrap gap-4 animate-slide-up stagger-2">
+              <Button asChild size="lg" className="font-medium hover-lift">
                 <Link href="/booking">Book Now</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 font-medium">
+              <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10 font-medium hover-lift">
                 <Link href="/photographers">Our Photographers</Link>
               </Button>
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute bottom-8 right-8 hidden lg:block animate-fade-in" style={{animationDelay: '1s'}}>
+          <div className="w-48 h-48 border-4 border-primary/30 rounded-full"></div>
+        </div>
+        <div className="absolute top-12 left-12 hidden lg:block animate-fade-in" style={{animationDelay: '0.5s'}}>
+          <div className="w-24 h-24 border-2 border-secondary/30 rounded-full"></div>
+        </div>
       </section>
 
       {/* Services Section */}
-      <section className="py-16 md:py-24 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-24 bg-neutral-50 relative overflow-hidden">
+        {/* Decorative element */}
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-primary/5 hidden lg:block"></div>
+        <div className="absolute -top-24 -left-24 w-64 h-64 rounded-full bg-secondary/5 hidden lg:block"></div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Our Premium Services</h2>
-            <p className="text-neutral-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4 animate-slide-up">
+              Our <span className="text-gradient">Premium Services</span>
+            </h2>
+            <p className="text-neutral-600 max-w-2xl mx-auto animate-slide-up" style={{animationDelay: '0.1s'}}>
               From traditional ceremonies to modern celebrations, our team captures every moment with precision and artistry.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {serviceCategories?.map((category) => (
+            {serviceCategories?.map((category, index) => (
               <Link key={category.id} href={`/services?category=${category.id}`}>
-                <Card className="group cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden h-full">
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                <Card className={`group cursor-pointer overflow-hidden h-full hover-lift animate-zoom-in stagger-${index + 1}`}>
+                  <div className="relative aspect-[4/3] overflow-hidden hover-img-zoom">
                     <img 
                       src={category.imageUrl} 
                       alt={category.name} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <span className="text-white text-sm font-medium">View Details</span>
+                    </div>
                   </div>
                   <CardContent className="p-6">
                     <div className="flex items-center mb-3">
-                      {category.name === "Photography" && <Camera className="h-5 w-5 text-primary mr-2" />}
-                      {category.name === "Videography" && <Video className="h-5 w-5 text-primary mr-2" />}
-                      {category.name === "Focus Services" && <Focus className="h-5 w-5 text-primary mr-2" />}
-                      {category.name === "Wedding Reels" && <Film className="h-5 w-5 text-primary mr-2" />}
-                      <h3 className="font-display text-xl font-semibold">{category.name}</h3>
+                      {category.name === "Photography" && <Camera className="h-5 w-5 text-primary mr-2 group-hover:text-secondary transition-colors duration-300" />}
+                      {category.name === "Videography" && <Video className="h-5 w-5 text-primary mr-2 group-hover:text-secondary transition-colors duration-300" />}
+                      {category.name === "Focus Services" && <Focus className="h-5 w-5 text-primary mr-2 group-hover:text-secondary transition-colors duration-300" />}
+                      {category.name === "Wedding Reels" && <Film className="h-5 w-5 text-primary mr-2 group-hover:text-secondary transition-colors duration-300" />}
+                      <h3 className="font-display text-xl font-semibold group-hover:text-primary transition-colors duration-300">{category.name}</h3>
                     </div>
                     <p className="text-neutral-600 text-sm">{category.description}</p>
                   </CardContent>
@@ -233,21 +252,25 @@ export default function Home() {
               imageUrl="https://images.unsplash.com/photo-1583939003579-730e3918a45a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=450&q=80"
               title="Venue Decoration"
               category="Traditional"
+              index={1}
             />
             <PhotographyCard 
               imageUrl="https://images.unsplash.com/photo-1623595119708-26b1f7500ddd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=450&q=80"
               title="Traditional Ceremonies"
               category="Ceremony"
+              index={2}
             />
             <PhotographyCard 
               imageUrl="https://images.unsplash.com/photo-1604604994333-f1b0e9471186?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=450&q=80"
               title="Focus Photography"
               category="Aerial"
+              index={3}
             />
             <PhotographyCard 
               imageUrl="https://images.unsplash.com/photo-1622547748225-3fc4abd2cca0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=450&q=80"
               title="Reception Highlights"
               category="Reception"
+              index={4}
             />
           </div>
 
