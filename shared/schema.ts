@@ -10,11 +10,13 @@ export const users = pgTable("users", {
   fullName: text("full_name").notNull(),
   phone: text("phone"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  type: text("type").notNull().default('customer') // Added type field
 });
 
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
+  type: true, //omit type in insert schema
 });
 
 export const photographers = pgTable("photographers", {
@@ -166,3 +168,11 @@ export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type Earnings = typeof earnings.$inferSelect;
 export type InsertEarnings = z.infer<typeof insertEarningsSchema>;
+
+export type UserType = 'customer' | 'photographer' | 'admin'; // Added UserType
+export type AdminDashboardStats = {
+  totalBookings: number;
+  totalRevenue: number;
+  totalPhotographers: number;
+  totalCustomers: number;
+};

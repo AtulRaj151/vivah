@@ -116,12 +116,21 @@ export default function Header() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <Link href="/dashboard">
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Calendar className="mr-2 h-4 w-4" />
-                      <span>My Bookings</span>
-                    </DropdownMenuItem>
-                  </Link>
+                  {user?.type === 'admin' ? (
+                    <Link href="/admin">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Users className="mr-2 h-4 w-4" />
+                        <span>Admin Dashboard</span>
+                      </DropdownMenuItem>
+                    </Link>
+                  ) : (
+                    <Link href="/dashboard">
+                      <DropdownMenuItem className="cursor-pointer">
+                        <Calendar className="mr-2 h-4 w-4" />
+                        <span>My Bookings</span>
+                      </DropdownMenuItem>
+                    </Link>
+                  )}
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogIn className="mr-2 h-4 w-4" />
                     <span>Logout</span>

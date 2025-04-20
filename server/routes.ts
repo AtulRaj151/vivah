@@ -28,7 +28,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/photographers/:id", async (req, res) => {
+  // Admin routes
+app.get("/api/admin/stats", async (req, res) => {
+  const stats = {
+    totalBookings: (await db.getAllBookings()).length,
+    totalRevenue: (await db.getAllBookings()).reduce((acc, booking) => acc + booking.totalAmount, 0),
+    totalPhotographers: (await db.getAllPhotographers()).length,
+    totalCustomers: (await db.getAllUsers()).filter(u => u.type === 'customer').length
+  };
+  res.json(stats);
+});
+
+app.get("/api/photographers/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
