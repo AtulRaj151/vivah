@@ -192,7 +192,8 @@ app.get("/api/photographers/:id", async (req, res) => {
         id: user.id, 
         username: user.username, 
         email: user.email,
-        fullName: user.fullName
+        fullName: user.fullName,
+        type: user.type
       });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
