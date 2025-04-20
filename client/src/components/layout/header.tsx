@@ -30,7 +30,7 @@ import { UserContext } from "@/App";
 export default function Header() {
   const [location] = useLocation();
   const { user, isAuthenticated, setUser } = useContext(UserContext);
-
+  
   const isActive = (path: string) => {
     return location === path;
   };
@@ -46,10 +46,10 @@ export default function Header() {
           <div className="flex items-center">
             <Link href="/">
               <a className="flex-shrink-0 flex items-center">
-                <h1 className="text-2xl font-display text-primary font-bold">Royal Videography</h1>
+                <h1 className="text-2xl font-display text-primary font-bold">Vivah</h1>
               </a>
             </Link>
-
+            
             {/* Desktop Navigation */}
             <nav className="hidden md:ml-6 md:flex md:space-x-6">
               <Link href="/">
@@ -62,7 +62,7 @@ export default function Header() {
                   Photographers
                 </a>
               </Link>
-
+              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className={`px-3 py-2 text-sm font-medium inline-flex items-center ${isActive('/services') ? 'text-primary' : 'text-neutral-600 hover:text-primary'}`}>
@@ -96,7 +96,7 @@ export default function Header() {
                   </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
-
+              
               <Link href="/booking">
                 <a className={`px-3 py-2 text-sm font-medium ${isActive('/booking') ? 'text-primary' : 'text-neutral-600 hover:text-primary'}`}>
                   Book Now
@@ -104,7 +104,7 @@ export default function Header() {
               </Link>
             </nav>
           </div>
-
+          
           {/* Desktop Auth Buttons */}
           <div className="hidden md:ml-6 md:flex md:items-center">
             {isAuthenticated ? (
@@ -136,7 +136,7 @@ export default function Header() {
               </Button>
             )}
           </div>
-
+          
           {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden">
             <Sheet>
@@ -148,9 +148,9 @@ export default function Header() {
               <SheetContent side="right">
                 <div className="flex flex-col h-full">
                   <div className="font-display text-xl text-primary font-bold py-4">
-                    Royal Videography
+                    Vivah
                   </div>
-
+                  
                   <nav className="flex flex-col space-y-4">
                     <SheetClose asChild>
                       <Link href="/">
@@ -159,7 +159,7 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <SheetClose asChild>
                       <Link href="/photographers">
                         <a className={`px-3 py-2 text-base font-medium rounded-md ${isActive('/photographers') ? 'text-primary bg-primary/5' : 'text-neutral-600 hover:text-primary hover:bg-neutral-50'}`}>
@@ -167,11 +167,11 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <div className="px-3 py-2 text-sm font-medium text-neutral-500 uppercase">
                       Services
                     </div>
-
+                    
                     <SheetClose asChild>
                       <Link href="/services?category=1">
                         <a className="px-3 py-2 text-base font-medium rounded-md text-neutral-600 hover:text-primary hover:bg-neutral-50 flex items-center">
@@ -180,7 +180,7 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <SheetClose asChild>
                       <Link href="/services?category=2">
                         <a className="px-3 py-2 text-base font-medium rounded-md text-neutral-600 hover:text-primary hover:bg-neutral-50 flex items-center">
@@ -189,7 +189,7 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <SheetClose asChild>
                       <Link href="/services?category=3">
                         <a className="px-3 py-2 text-base font-medium rounded-md text-neutral-600 hover:text-primary hover:bg-neutral-50 flex items-center">
@@ -198,7 +198,7 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <SheetClose asChild>
                       <Link href="/services?category=4">
                         <a className="px-3 py-2 text-base font-medium rounded-md text-neutral-600 hover:text-primary hover:bg-neutral-50 flex items-center">
@@ -207,7 +207,7 @@ export default function Header() {
                         </a>
                       </Link>
                     </SheetClose>
-
+                    
                     <SheetClose asChild>
                       <Link href="/booking">
                         <a className={`px-3 py-2 text-base font-medium rounded-md ${isActive('/booking') ? 'text-primary bg-primary/5' : 'text-neutral-600 hover:text-primary hover:bg-neutral-50'}`}>
@@ -216,7 +216,7 @@ export default function Header() {
                       </Link>
                     </SheetClose>
                   </nav>
-
+                  
                   <div className="mt-auto py-4">
                     {isAuthenticated ? (
                       <div className="space-y-4">

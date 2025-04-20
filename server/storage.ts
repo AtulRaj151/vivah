@@ -331,7 +331,7 @@ async createEarnings(insertEarnings: InsertEarnings): Promise<Earnings> {
   return earnings;
 }
 
-  private initializeSampleData() {
+private initializeSampleData() {
     // Add sample photographers
     const photographers: InsertPhotographer[] = [
       {
@@ -340,7 +340,7 @@ async createEarnings(insertEarnings: InsertEarnings): Promise<Earnings> {
         profileImage: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&h=200&q=80",
         specialties: ["Traditional Ceremonies", "Candid Moments", "Drone Photography"],
         experience: 10,
-        location: "Dehri on Sone, Rohtas, Bihar"
+        location: "Mumbai"
       },
       {
         name: "Priya Singh",

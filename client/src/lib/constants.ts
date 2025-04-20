@@ -22,47 +22,6 @@ export const POPULAR_LOCATIONS = [
   { value: "goa", label: "Goa" }
 ];
 
-export const LOCATIONS = [
-  "Rohtas",
-  "Patna",
-  "Bhojpur",
-  "Buxar",
-  "Kaimur",
-  "Gaya",
-  "Aurangabad",
-  "Nalanda",
-  "Nawada",
-  "Arwal",
-  "Jehanabad",
-  "Vaishali",
-  "Saran",
-  "Siwan",
-  "Gopalganj",
-  "East Champaran",
-  "West Champaran",
-  "Muzaffarpur",
-  "Sitamarhi",
-  "Sheohar",
-  "Madhubani",
-  "Darbhanga",
-  "Samastipur",
-  "Begusarai",
-  "Khagaria",
-  "Bhagalpur",
-  "Banka",
-  "Munger",
-  "Lakhisarai",
-  "Sheikhpura",
-  "Jamui",
-  "Saharsa",
-  "Supaul",
-  "Madhepura",
-  "Purnia",
-  "Kishanganj",
-  "Araria",
-  "Katihar",
-];
-
 // Time slots
 export const TIME_SLOTS = [
   { value: "morning", label: "Morning (8:00 AM - 12:00 PM)" },

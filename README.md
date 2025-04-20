@@ -1,5 +1,5 @@
 
-# Royal Videography Booking Platform - Dehri on Sone
+# Photography Booking Platform
 
 A full-stack web application for booking photography services, built with React, Express, and TypeScript.
 
