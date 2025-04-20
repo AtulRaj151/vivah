@@ -108,9 +108,9 @@ export default function Home() {
               />
             </div>
             <div className="w-full lg:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Why Choose Vivah Photography?</h2>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Why Choose Royal Videography?</h2>
               <p className="text-neutral-600 mb-8">
-                We combine technical expertise with cultural understanding to create stunning visual narratives of your celebration. Our team specializes in capturing authentic moments with artistic flair.
+                We combine technical expertise with cultural understanding to create stunning visual narratives of your celebration. Our team specializes in capturing authentic moments with artistic flair.  We are located in Dehri on Sone, Rohtas district, Bihar.
               </p>
               <div className="space-y-4">
                 <div className="flex">
@@ -178,13 +178,13 @@ export default function Home() {
                 <CardContent className="p-5">
                   <h3 className="text-xl font-display font-semibold text-primary mb-2">{pkg.name}</h3>
                   <p className="text-sm text-neutral-600 mb-4">{pkg.description}</p>
-                  
+
                   <div className="mb-4">
                     <p className="text-2xl font-display font-bold text-primary">
                       ₹{pkg.price.toLocaleString()}
                     </p>
                   </div>
-                  
+
                   <div className="mt-auto">
                     <h4 className="font-medium text-sm mb-2">Package Includes:</h4>
                     <ul className="space-y-2">
@@ -199,7 +199,7 @@ export default function Home() {
                       )}
                     </ul>
                   </div>
-                  
+
                   <Link href="/booking">
                     <Button 
                       className={`w-full mt-4 ${pkg.popular ? 'bg-secondary hover:bg-secondary/90' : ''}`}
@@ -246,7 +246,7 @@ export default function Home() {
               category="Reception"
             />
           </div>
-          
+
           <div className="text-center mt-8">
             <Button asChild variant="outline">
               <Link href="/photographers">View More</Link>
@@ -285,7 +285,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">Ready to Book Your Wedding Photography?</h2>
           <p className="text-white/90 max-w-2xl mx-auto mb-8 text-lg">
-            Let's create beautiful memories together. Our team is ready to capture your special day with creativity and passion.
+            Let's create beautiful memories together. Our team is ready to capture your special day with creativity and passion.  Contact us at +91 7004711393 or visit us in Dehri on Sone, Bihar - 821305.
           </p>
           <div className="flex flex-wrap justify-center gap-6 mb-12">
             <div className="flex flex-col items-center">
