@@ -348,7 +348,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ? await storage.getEarningsByPhotographer(photographerId)
         : await storage.getAllEarnings();
       const summary = await storage.getEarningsSummary(photographerId);
-      res.json({ earnings, summary });
+      
+      // Calculate additional metrics
+      const now = new Date();
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      
+      const monthlyEarnings = earnings.filter((e: any) => new Date(e.earnedAt) >= lastMonth);
+      const prevMonthEarnings = earnings.filter((e: any) => {
+        const date = new Date(e.earnedAt);
+        return date >= new Date(lastMonth.getFullYear(), lastMonth.getMonth() - 1, 1) &&
+               date < lastMonth;
+      });
+      
+      const currentMonthTotal = monthlyEarnings.reduce((sum: number, e: any) => sum + e.amount, 0);
+      const prevMonthTotal = prevMonthEarnings.reduce((sum: number, e: any) => sum + e.amount, 0);
+      
+      const monthlyGrowth = prevMonthTotal ? ((currentMonthTotal - prevMonthTotal) / prevMonthTotal) * 100 : 0;
+      
+      const enhancedSummary = {
+        ...summary,
+        monthlyGrowth: Math.round(monthlyGrowth * 100) / 100,
+        currentMonthRevenue: currentMonthTotal,
+        averageBookingValue: earnings.length ? 
+          earnings.reduce((sum: number, e: any) => sum + e.amount, 0) / earnings.length : 0
+      };
+
+      res.json({ earnings, summary: enhancedSummary });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.get("/api/earnings/analytics", async (req, res) => {
+    try {
+      const photographerId = req.query.photographerId ? parseInt(req.query.photographerId as string) : undefined;
+      const timeframe = req.query.timeframe || 'month';
+      
+      const analytics = await storage.getEarningsAnalytics(photographerId, timeframe as string);
+      res.json(analytics);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }

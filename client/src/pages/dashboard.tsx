@@ -438,6 +438,14 @@ export default function Dashboard() {
         </div>
       )}
       
+      {/* Earnings Dashboard */}
+      {user?.type === 'photographer' && (
+        <div className="mb-8">
+          <h2 className="text-xl font-display font-semibold mb-4">Earnings Overview</h2>
+          <EarningsDashboard photographerId={user.id} />
+        </div>
+      )}
+
       {/* Help & Support */}
       <Card>
         <CardHeader>

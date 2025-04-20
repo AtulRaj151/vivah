@@ -1,48 +1,35 @@
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./table";
-import { Badge } from "./badge";
-import { formatCurrency, formatDate } from "@/lib/constants";
-import { BarChart, DollarSign, TrendingUp, Wallet } from "lucide-react";
-import { Earnings } from "@shared/schema";
-
-interface EarningsSummary {
-  totalEarnings: number;
-  platformEarnings: number;
-  photographerEarnings: number;
-  pendingPayouts: number;
-}
-
-interface EarningsResponse {
-  earnings: Earnings[];
-  summary: EarningsSummary;
-}
+import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import { 
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell
+} from "recharts";
+import { formatCurrency } from "@/lib/constants";
 
 export function EarningsDashboard({ photographerId }: { photographerId?: number }) {
-  const { data, isLoading } = useQuery<EarningsResponse>({
-    queryKey: ['/api/earnings', photographerId],
-    queryString: photographerId ? `?photographerId=${photographerId}` : '',
+  const { data, isLoading } = useQuery({
+    queryKey: [`/api/earnings${photographerId ? `?photographerId=${photographerId}` : ''}`],
   });
 
   if (isLoading) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-40 bg-neutral-100 rounded-lg"></div>
-        <div className="h-80 bg-neutral-100 rounded-lg"></div>
+        <div className="h-64 bg-neutral-100 rounded-lg"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="h-64 bg-neutral-100 rounded-lg"></div>
+          <div className="h-64 bg-neutral-100 rounded-lg"></div>
+        </div>
       </div>
     );
   }
@@ -51,105 +38,144 @@ export function EarningsDashboard({ photographerId }: { photographerId?: number 
 
   const { earnings, summary } = data;
 
+  // Format data for charts
+  const monthlyData = earnings.reduce((acc: any[], curr: any) => {
+    const month = new Date(curr.earnedAt).toLocaleString('default', { month: 'short' });
+    const existing = acc.find(item => item.month === month);
+    if (existing) {
+      existing.amount += curr.amount;
+      existing.earnings += curr.photographerEarnings;
+    } else {
+      acc.push({
+        month,
+        amount: curr.amount,
+        earnings: curr.photographerEarnings
+      });
+    }
+    return acc;
+  }, []);
+
+  const statusData = earnings.reduce((acc: any[], curr: any) => {
+    const existing = acc.find(item => item.status === curr.status);
+    if (existing) {
+      existing.value += curr.amount;
+    } else {
+      acc.push({
+        status: curr.status,
+        value: curr.amount
+      });
+    }
+    return acc;
+  }, []);
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
   return (
     <div className="space-y-8">
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-primary/10 rounded-md mr-4">
-                <DollarSign className="h-6 w-6 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600">Total Earnings</p>
-                <h3 className="text-2xl font-bold">{formatCurrency(summary.totalEarnings)}</h3>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(summary.totalEarnings)}</div>
+            <p className="text-xs text-muted-foreground">+{summary.monthlyGrowth}% from last month</p>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-green-100 rounded-md mr-4">
-                <TrendingUp className="h-6 w-6 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600">Platform Earnings</p>
-                <h3 className="text-2xl font-bold">{formatCurrency(summary.platformEarnings)}</h3>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Platform Fees</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(summary.platformFees)}</div>
+            <p className="text-xs text-muted-foreground">15% commission rate</p>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-md mr-4">
-                <BarChart className="h-6 w-6 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600">Photographer Earnings</p>
-                <h3 className="text-2xl font-bold">{formatCurrency(summary.photographerEarnings)}</h3>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Payouts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(summary.pendingPayouts)}</div>
+            <p className="text-xs text-muted-foreground">{summary.pendingBookings} bookings</p>
           </CardContent>
         </Card>
-
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-md mr-4">
-                <Wallet className="h-6 w-6 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600">Pending Payouts</p>
-                <h3 className="text-2xl font-bold">{formatCurrency(summary.pendingPayouts)}</h3>
-              </div>
-            </div>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Completed Bookings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{summary.completedBookings}</div>
+            <p className="text-xs text-muted-foreground">
+              {Math.round((summary.completedBookings / summary.totalBookings) * 100)}% completion rate
+            </p>
           </CardContent>
         </Card>
       </div>
 
+      {/* Revenue Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Earnings History</CardTitle>
-          <CardDescription>Detailed view of all earnings and their status</CardDescription>
+          <CardTitle>Revenue Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Booking ID</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Platform Fee</TableHead>
-                <TableHead>Photographer Earnings</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {earnings.map((earning) => (
-                <TableRow key={earning.id}>
-                  <TableCell>{formatDate(earning.earnedAt)}</TableCell>
-                  <TableCell>#{earning.bookingId}</TableCell>
-                  <TableCell>{formatCurrency(earning.amount)}</TableCell>
-                  <TableCell>{formatCurrency(earning.platformEarnings)}</TableCell>
-                  <TableCell>{formatCurrency(earning.photographerEarnings)}</TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={earning.status === 'paid' ? 'default' : 'outline'}
-                      className={earning.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-                    >
-                      {earning.status}
-                    </Badge>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <LineChart width={800} height={400} data={monthlyData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="amount" stroke="#8884d8" name="Total Revenue" />
+            <Line type="monotone" dataKey="earnings" stroke="#82ca9d" name="Net Earnings" />
+          </LineChart>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Booking Status */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Booking Status</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PieChart width={400} height={300}>
+              <Pie
+                data={statusData}
+                cx={200}
+                cy={150}
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {statusData.map((entry: any, index: number) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </CardContent>
+        </Card>
+
+        {/* Monthly Comparisons */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Monthly Comparison</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <BarChart width={400} height={300} data={monthlyData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="amount" fill="#8884d8" name="Revenue" />
+            </BarChart>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
