@@ -1,24 +1,37 @@
 
-# Royal Videography Booking Platform - Dehri on Sone
+# Royal Videography - Dehri on Sone
 
-A full-stack web application for booking photography services, built with React, Express, and TypeScript.
-
-## Features
-
-- Browse and book photographers
-- View photography packages and services
-- Secure checkout process
-- Booking management dashboard
-- Real-time availability checking
-- Responsive design
+A full-stack web application for booking photography and videography services, based in Dehri on Sone, Bihar.
 
 ## Tech Stack
 
-- Frontend: React + TypeScript + Vite
-- Backend: Express + TypeScript
-- UI Components: Radix UI + Tailwind CSS
-- State Management: TanStack Query
-- Routing: Wouter
+### Frontend
+- **React 18** - UI library
+- **TypeScript** - Type safety and better developer experience
+- **Vite** - Next generation frontend tooling
+- **TanStack Query** - Server state management
+- **Radix UI** - Headless UI components
+- **Tailwind CSS** - Utility-first CSS framework
+- **Wouter** - Lightweight routing
+
+### Backend
+- **Express** - Node.js web framework
+- **TypeScript** - Type safety for backend
+- **Drizzle ORM** - TypeScript ORM
+- **PostgreSQL** - Database
+- **Stripe** - Payment processing
+
+### Development Tools
+- **ESBuild** - Fast JavaScript/TypeScript bundler
+- **tsx** - TypeScript execution environment
+- **Drizzle Kit** - Database schema management
+
+## Contact
+
+- **Founder**: Ajay Sharma
+- **Location**: Dehri-on-Sone, Bihar - 821305
+- **Phone**: +91 8340608143, +91 7004711393
+- **Email**: atulsid156@gmail.com
 
 ## Getting Started
 
@@ -27,15 +40,9 @@ A full-stack web application for booking photography services, built with React,
 npm install
 ```
 
-2. Start the development server:
+2. Start development server:
 ```bash
 npm run dev
 ```
 
-The application will start on port 5000.
-
-## Project Structure
-
-- `/client` - React frontend application
-- `/server` - Express backend server
-- `/shared` - Shared TypeScript types and schemas
+The application will be available at port 5000.
