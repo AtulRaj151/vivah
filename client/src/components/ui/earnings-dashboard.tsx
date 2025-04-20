@@ -18,7 +18,20 @@ import {
 import { formatCurrency } from "@/lib/constants";
 
 export function EarningsDashboard({ photographerId }: { photographerId?: number }) {
-  const { data, isLoading } = useQuery({
+  interface EarningsData {
+    earnings: { earnedAt: string; amount: number; photographerEarnings: number; status: string }[];
+    summary: {
+      totalEarnings: number;
+      monthlyGrowth: number;
+      platformFees: number;
+      pendingPayouts: number;
+      pendingBookings: number;
+      completedBookings: number;
+      totalBookings: number;
+    };
+  }
+
+  const { data, isLoading } = useQuery<EarningsData>({
     queryKey: [`/api/earnings${photographerId ? `?photographerId=${photographerId}` : ''}`],
   });
 

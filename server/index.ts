@@ -49,7 +49,8 @@ app.use((req, res, next) => {
   });
 
   if (app.get("env") === "development") {
-    await setupVite(app);
+    const server = app.listen(8080); // Replace 3000 with your desired port if needed
+    await setupVite(app, server);
   } else {
     serveStatic(app);
   }
@@ -57,5 +58,5 @@ app.use((req, res, next) => {
 
 // Export the app as a handler for Vercel
 export default (req: VercelRequest, res: VercelResponse) => {
-  app(req as any, res as any);
+  app(req as any, res as any, () => {});
 };

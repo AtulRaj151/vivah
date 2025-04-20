@@ -8,7 +8,8 @@ import {
   type ServiceCategory, type InsertServiceCategory,
   type PortfolioItem, type InsertPortfolioItem,
   type Testimonial, type InsertTestimonial,
-  type Booking, type InsertBooking
+  type Booking, type InsertBooking,
+  type Earnings, type InsertEarnings
 } from "@shared/schema";
 
 // modify the interface with any CRUD methods
@@ -135,7 +136,8 @@ export class MemStorage implements IStorage {
       ...insertUser, 
       id, 
       createdAt: now,
-      type: insertUser.type || 'customer' 
+      type: insertUser.type || 'customer',
+      phone: insertUser.phone ?? null
     };
     this.users.set(id, user);
     return user;
@@ -210,7 +212,7 @@ export class MemStorage implements IStorage {
 
   async createPackage(insertPackage: InsertPackage): Promise<Package> {
     const id = this.currentId.packages++;
-    const pkg: Package = { ...insertPackage, id };
+    const pkg: Package = { ...insertPackage, id, popular: insertPackage.popular ?? false };
     this.packages.set(id, pkg);
     return pkg;
   }
@@ -224,7 +226,7 @@ export class MemStorage implements IStorage {
 
   async createPortfolioItem(insertItem: InsertPortfolioItem): Promise<PortfolioItem> {
     const id = this.currentId.portfolioItems++;
-    const item: PortfolioItem = { ...insertItem, id };
+    const item: PortfolioItem = { ...insertItem, id, description: insertItem.description ?? null };
     this.portfolioItems.set(id, item);
     return item;
   }
@@ -242,7 +244,7 @@ export class MemStorage implements IStorage {
 
   async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
     const id = this.currentId.testimonials++;
-    const testimonial: Testimonial = { ...insertTestimonial, id };
+    const testimonial: Testimonial = { ...insertTestimonial, id, clientImage: insertTestimonial.clientImage ?? null };
     this.testimonials.set(id, testimonial);
     return testimonial;
   }
@@ -265,7 +267,15 @@ export class MemStorage implements IStorage {
   async createBooking(insertBooking: InsertBooking): Promise<Booking> {
     const id = this.currentId.bookings++;
     const now = new Date();
-    const booking: Booking = { ...insertBooking, id, createdAt: now, paymentIntentId: null };
+    const booking: Booking = { 
+      ...insertBooking, 
+      id, 
+      createdAt: now, 
+      paymentIntentId: null, 
+      status: insertBooking.status || 'pending', 
+      packageId: insertBooking.packageId ?? null,
+      paymentStatus: insertBooking.paymentStatus || 'unpaid' 
+    };
     this.bookings.set(id, booking);
     return booking;
   }
@@ -354,7 +364,9 @@ async createEarnings(insertEarnings: InsertEarnings): Promise<Earnings> {
     ...insertEarnings,
     id,
     earnedAt: new Date(),
-    paidAt: null
+    paidAt: null,
+    status: insertEarnings.status || 'pending', // Ensure status has a default value
+    commissionRate: insertEarnings.commissionRate ?? 0 // Assign a default value if undefined
   };
   this.earnings.set(id, earnings);
   return earnings;

@@ -733,7 +733,7 @@ export default function Booking() {
                         price={pkg.price}
                         features={pkg.features}
                         imageUrl={pkg.imageUrl}
-                        popular={pkg.popular}
+                        popular={pkg.popular ?? false}
                         onSelect={() => handlePackageSelect(pkg.id)}
                       />
                       {selectedPackage === pkg.id && (

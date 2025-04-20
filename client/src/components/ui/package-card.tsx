@@ -9,7 +9,7 @@ interface PackageCardProps {
   price: number;
   features: string[];
   imageUrl: string;
-  popular: boolean;
+  popular: boolean; // Ensure this prop is passed as true or false when using the component
   onSelect?: () => void;
 }
 
