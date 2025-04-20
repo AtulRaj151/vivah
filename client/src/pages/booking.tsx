@@ -225,17 +225,18 @@ export default function Booking() {
 
   // Function to update the total amount based on selected services and package
   const updateTotalAmount = (
-    services: Record<number, boolean> = selectedServices,
+    selectedServiceMap: Record<number, boolean> = selectedServices,
     packageId: number | null = selectedPackage
   ) => {
     let total = 0;
 
     // Add cost of selected services
-    if (services && Object.keys(services).length > 0) {
-      Object.entries(services).forEach(([id, selected]) => {
+    if (selectedServiceMap && Object.keys(selectedServiceMap).length > 0) {
+      Object.entries(selectedServiceMap).forEach(([id, selected]) => {
         if (selected) {
           const serviceId = parseInt(id);
-          const service = window.services?.find(s => s.id === serviceId);
+          // Use the services from the API query
+          const service = services?.find(s => s.id === serviceId);
           if (service) {
             total += service.price;
           }
@@ -251,6 +252,7 @@ export default function Booking() {
       }
     }
 
+    console.log("Updated total amount:", total);
     setTotalAmount(total);
     form.setValue("totalAmount", total);
   };
@@ -813,14 +815,15 @@ export default function Booking() {
             </Card>
 
             {/* Submit Button */}
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-8">
               <Button 
                 type="submit" 
                 size="lg"
+                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-lg"
                 disabled={!selectedPhotographer || !form.getValues("eventDate") || totalAmount <= 0}
               >
-                Continue to Payment
-                <ChevronRight className="ml-2 h-4 w-4" />
+                Book Now
+                <ChevronRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
